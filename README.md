@@ -37,8 +37,15 @@ No meetings. No copy-paste. No guessing.
 
 ## Install
 
+**Option 1 — npx (no install needed):**
 ```bash
 npx specross init
+```
+
+**Option 2 — global install:**
+```bash
+npm install -g specross
+specross init
 ```
 
 Run in your project root. It asks which AI tool you're using, then copies commands and agents to the right place.
@@ -52,9 +59,14 @@ Which AI tool are you using?
   4. Other         →  ai/commands/  +  ai/agents/
 ```
 
+**Update commands to latest version:**
 ```bash
-npx specross update   # pull latest commands — never overwrites your customizations
+npx specross update
+# or
+specross update
 ```
+
+Never overwrites your agent and template customizations.
 
 **Requirements:** Node.js 16+
 

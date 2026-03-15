@@ -73,7 +73,16 @@ Parse $ARGUMENTS:
 `stories/{STORY}/story.md`
 ```
 
-8. Create a git tag suggestion. Print:
+8. **Check for outdated specs** — after promoting to `stories/`, check who is behind:
+
+   - Check `stories/{STORY}/tech/.spec-lock`:
+     - If it exists: read `spec-version` from it
+     - If `spec-version` ≠ `{VERSION}` → Dev's tech spec is outdated (locked at that version)
+   - Check `stories/{STORY}/test/.spec-lock`:
+     - If it exists: read `spec-version` from it
+     - If `spec-version` ≠ `{VERSION}` → QC's test cases are outdated (locked at that version)
+
+9. Create a git tag suggestion. Print:
 
 ```
 ✅  Story released: {STORY} {VERSION}
@@ -89,7 +98,23 @@ Then share the release note with Dev and QC:
   📄  stories/{STORY}/docs/release-{VERSION}.md
 ```
 
-9. If this is an update (not first release), also print the impact summary so the BA can paste it into their team chat:
+   If any specs are outdated (from step 8), append an alert block:
+
+```
+⚠️  OUTDATED SPECS DETECTED
+──────────────────────────────────────────
+[For each outdated spec, one line:]
+  🔴  Dev tech spec is on {locked-version} — run /dev:sync {STORY}
+  🔴  QC test cases are on {locked-version} — run /qc:sync {STORY}
+──────────────────────────────────────────
+```
+
+   If all specs are up to date (or no specs exist yet), print:
+```
+✅  No outdated specs.
+```
+
+10. If this is an update (not first release), also print the impact summary so the BA can paste it into their team chat:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -268,11 +268,13 @@ ${c.bold}What gets installed:${c.reset}
   CLAUDE.md       Project config — fill this in!
 
 ${c.bold}Commands available after install:${c.reset}
-  /ba:new-story   /ba:review   /ba:release   /ba:impact
-  /dev:gen-tech-spec   /dev:gen-scaffold   /dev:review   /dev:sync
-  /qc:gen-test-cases   /qc:gen-scripts   /qc:bug-report   /qc:sync
+  /help  (list all commands with descriptions)
 
-${c.dim}Docs: https://github.com/your-org/specross${c.reset}
+  /ba:new-story   /ba:review   /ba:release   /ba:impact
+  /dev:gen-tech-spec   /dev:gen-scaffold   /dev:review   /dev:sync   /dev:status
+  /qc:gen-test-cases   /qc:gen-scripts   /qc:bug-report   /qc:sync   /qc:status
+
+${c.dim}Docs: https://github.com/ethandev147/specross${c.reset}
 `);
 }
 

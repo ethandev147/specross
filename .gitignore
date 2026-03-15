@@ -1,0 +1,10 @@
+# Claude Code local settings
+.claude/
+
+# npm
+node_modules/
+*.tgz
+
+# OS
+.DS_Store
+Thumbs.db

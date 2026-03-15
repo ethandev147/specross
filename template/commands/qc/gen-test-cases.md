@@ -27,10 +27,10 @@ Generate test cases for story: $ARGUMENTS
    - Every Edge Case from story.md → its own TC
    - Coverage matrix must list every AC with its TC IDs
 
-7. Create `.spec-lock` at `stories/$ARGUMENTS/test/.spec-lock`:
+7. Read `stories/$ARGUMENTS/CHANGELOG.md` to find the current story version (the latest `## vX.Y.Z` entry at the top). Create `.spec-lock` at `stories/$ARGUMENTS/test/.spec-lock`:
    ```
    story: $ARGUMENTS
-   spec-version: (current git tag or "untagged")
+   spec-version: {current-story-version}
    generated: {today}
    ```
 

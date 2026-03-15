@@ -26,10 +26,10 @@ Generate a technical specification for story: $ARGUMENTS
    - Fill `{{DATE}}` with today's date
    - Map every AC from story.md into the AC Mapping table — no AC left blank
 
-7. Create `.spec-lock` at `stories/$ARGUMENTS/tech/.spec-lock`:
+7. Read `stories/$ARGUMENTS/CHANGELOG.md` to find the current story version (the latest `## vX.Y.Z` entry at the top). Create `.spec-lock` at `stories/$ARGUMENTS/tech/.spec-lock`:
    ```
    story: $ARGUMENTS
-   spec-version: (current git tag or "untagged")
+   spec-version: {current-story-version}
    generated: {today}
    ```
 
