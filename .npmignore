@@ -1,0 +1,5 @@
+# Development and CI files — not needed in the published package
+.github/
+.gitignore
+*.test.js
+*.spec.js
