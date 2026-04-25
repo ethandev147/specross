@@ -1,5 +1,8 @@
 # Specross
 
+[![npm version](https://img.shields.io/npm/v/specross.svg)](https://www.npmjs.com/package/specross)
+[![npm downloads](https://img.shields.io/npm/dm/specross.svg)](https://www.npmjs.com/package/specross)
+
 **One source of truth for BA, Dev, and QC — powered by Claude Code.**
 
 ---
