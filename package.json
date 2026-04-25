@@ -2,18 +2,27 @@
   "name": "specross",
   "version": "1.1.0",
   "description": "Spec-driven AI collaboration for BA, Dev, and QC teams — built for Claude Code",
-  "keywords": ["claude", "claude-code", "ai", "agile", "ba", "dev", "qc", "specflow"],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "ai",
+    "agile",
+    "ba",
+    "dev",
+    "qc",
+    "specflow"
+  ],
   "homepage": "https://github.com/ethandev147/specross",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ethandev147/specross.git"
+    "url": "git+https://github.com/ethandev147/specross.git"
   },
   "license": "MIT",
   "engines": {
     "node": ">=16"
   },
   "bin": {
-    "specross": "./bin/cli.js"
+    "specross": "bin/cli.js"
   },
   "files": [
     "bin/",
