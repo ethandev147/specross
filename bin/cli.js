@@ -23,32 +23,12 @@ const err  = (msg) => console.log(`${c.red}✗${c.reset}  ${msg}`);
 const head = (msg) => console.log(`\n${c.bold}${c.cyan}${msg}${c.reset}`);
 const rule = ()    => console.log(`${c.dim}${'─'.repeat(56)}${c.reset}`);
 
-// ─── AI tool destinations ──────────────────────────────────────────────────────
-const AI_TOOLS = {
-  '1': {
-    name: 'Claude Code',
-    commandsDir: '.claude/commands',
-    agentsDir:   '.claude/agents',
-    hint: 'Slash commands auto-loaded. Run: claude .',
-  },
-  '2': {
-    name: 'Cursor',
-    commandsDir: '.cursor/rules',
-    agentsDir:   '.cursor/rules',
-    hint: 'Rules auto-loaded by Cursor. Open your project in Cursor.',
-  },
-  '3': {
-    name: 'Windsurf',
-    commandsDir: '.windsurf/rules',
-    agentsDir:   '.windsurf/rules',
-    hint: 'Rules auto-loaded by Windsurf. Open your project in Windsurf.',
-  },
-  '4': {
-    name: 'Other / Manual',
-    commandsDir: 'ai/commands',
-    agentsDir:   'ai/agents',
-    hint: 'Files copied to ai/. Load them manually into your AI tool.',
-  },
+// ─── AI tool destination (Claude Code only) ───────────────────────────────────
+const CLAUDE_TOOL = {
+  name:        'Claude Code',
+  commandsDir: '.claude/commands',
+  agentsDir:   '.claude/agents',
+  hint:        'Slash commands auto-loaded. Run: claude .',
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -113,23 +93,10 @@ async function cmdInit() {
   console.log(`\n${c.bold}${c.cyan}Specross${c.reset} — installing into ${c.bold}${cwd}${c.reset}\n`);
   rule();
 
-  // Ask which AI tool
-  head('Which AI tool are you using?');
-  console.log('');
-  Object.entries(AI_TOOLS).forEach(([key, tool]) => {
-    console.log(`  ${c.bold}${key}${c.reset}. ${tool.name}`);
-  });
-  console.log('');
+  const tool = CLAUDE_TOOL;
+  info(`Installing for ${c.bold}${c.cyan}${tool.name}${c.reset}\n`);
 
-  let toolKey = await ask(`  ${c.yellow}Enter number (default: 1) ${c.reset}`);
-  if (!toolKey || !AI_TOOLS[toolKey]) toolKey = '1';
-  const tool = AI_TOOLS[toolKey];
-
-  console.log(`\n  Installing for ${c.bold}${c.cyan}${tool.name}${c.reset}\n`);
-  rule();
-
-  // Save choice so `update` knows where to update
-  writeConfig(cwd, { aiTool: toolKey, commandsDir: tool.commandsDir, agentsDir: tool.agentsDir });
+  writeConfig(cwd, { commandsDir: tool.commandsDir, agentsDir: tool.agentsDir });
 
   // 1. commands — always safe to overwrite
   head('Step 1 — Commands');
@@ -189,25 +156,8 @@ async function cmdUpdate() {
   console.log(`\n${c.bold}${c.cyan}Specross${c.reset} — updating\n`);
   rule();
 
-  // Read saved config to know where commands live
-  const cfg = readConfig(cwd);
-  let tool;
-
-  if (cfg) {
-    tool = AI_TOOLS[cfg.aiTool];
-    info(`Detected: ${tool.name} (from .specross.json)\n`);
-  } else {
-    head('Which AI tool are you using?');
-    console.log('');
-    Object.entries(AI_TOOLS).forEach(([key, t]) => {
-      console.log(`  ${c.bold}${key}${c.reset}. ${t.name}`);
-    });
-    console.log('');
-    let toolKey = await ask(`  ${c.yellow}Enter number (default: 1) ${c.reset}`);
-    if (!toolKey || !AI_TOOLS[toolKey]) toolKey = '1';
-    tool = AI_TOOLS[toolKey];
-    writeConfig(cwd, { aiTool: toolKey, commandsDir: tool.commandsDir, agentsDir: tool.agentsDir });
-  }
+  const tool = CLAUDE_TOOL;
+  info(`Updating for ${c.bold}${c.cyan}${tool.name}${c.reset}\n`);
 
   info('Commands will be updated to the latest version.');
   info('Agents and templates will NOT be touched — your customizations are safe.\n');
@@ -253,14 +203,11 @@ ${c.bold}Usage:${c.reset}
   npx specross update    Update commands only (keeps your customizations)
   npx specross help      Show this help
 
-${c.bold}Supported AI tools:${c.reset}
-  1. Claude Code  → .claude/commands/  + .claude/agents/
-  2. Cursor       → .cursor/rules/
-  3. Windsurf     → .windsurf/rules/
-  4. Other        → ai/commands/  + ai/agents/
+${c.bold}Target:${c.reset}
+  Claude Code  → .claude/commands/  + .claude/agents/
 
 ${c.bold}What gets installed:${c.reset}
-  commands/       12 slash commands for BA, Dev, QC
+  commands/       14 slash commands for BA, Dev, QC
   agents/         Role personas — customize per role (never overwritten by update)
   _templates/     Output format — customize freely (never overwritten by update)
   ba/             BA draft workspace
@@ -270,9 +217,10 @@ ${c.bold}What gets installed:${c.reset}
 ${c.bold}Commands available after install:${c.reset}
   /help  (list all commands with descriptions)
 
-  /ba:new-story   /ba:review   /ba:release   /ba:impact
-  /dev:gen-tech-spec   /dev:gen-scaffold   /dev:review   /dev:sync   /dev:status
-  /qc:gen-test-cases   /qc:gen-scripts   /qc:bug-report   /qc:sync   /qc:status
+  /ba:new-story   /ba:review   /ba:impact   /ba:release
+  /dev:gen-tech-spec   /dev:review   /dev:sync   /dev:status   /dev:done
+  /qc:gen-test-cases   /qc:run   /qc:retest   /qc:gen-scripts
+  /qc:bug-report   /qc:sync   /qc:status
 
 ${c.dim}Docs: https://github.com/ethandev147/specross${c.reset}
 `);

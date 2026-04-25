@@ -1,80 +1,32 @@
 # Test Cases — {{STORY_NAME}}
 
 **Story:** stories/{{STORY_SLUG}}/story.md
-**Spec version:** (from .spec-lock)
-**Author:**
-**Date:** {{DATE}}
-**Status:** Draft | In Review | Approved
+**Date:** {{DATE}} | **Spec version:** (from .spec-lock)
 
 ---
 
-## Test Suite Overview
+## Summary
 
-> What is being tested and the overall testing approach.
+| Total | ✅ Pass | ❌ Fail | ⏳ Pending | 🚫 Blocked |
+|-------|---------|---------|-----------|-----------|
+| N | 0 | 0 | N | 0 |
 
----
+## Coverage Matrix
 
-## Happy Path Tests
+| AC | TC IDs | File | Status |
+|----|--------|------|--------|
+| AC-01 | TC-001, TC-002 | [AC-01-...](cases/AC-01-....md) | ⏳ |
+| AC-02 | TC-010 | [AC-02-...](cases/AC-02-....md) | ⏳ |
 
-### TC-001: [Short title]
-**AC covered:** AC-01
-**Preconditions:**
-- User is logged in as [role]
-- [Any other setup]
+## Test Run Log
 
-**Test steps:**
-1. Navigate to ...
-2. Click / enter ...
-3. Submit / trigger ...
+| TC ID | Title | Type | AC | Result | Run date |
+|-------|-------|------|----|--------|----------|
+| TC-001 | ... | Happy path | AC-01 | ⏳ | — |
+| TC-002 | ... | Negative | AC-01 | ⏳ | — |
 
-**Expected result:** ...
-**Priority:** High
-**Automated:** Yes / No / Planned
+## Bug Reports
 
----
-
-### TC-002: [Short title]
-**AC covered:** AC-02
-**Preconditions:** ...
-**Test steps:**
-1. ...
-**Expected result:** ...
-**Priority:** High
-**Automated:** Yes / No / Planned
-
----
-
-## Edge Case Tests
-
-### TC-010: [Short title]
-**AC covered:** EC-01
-**Preconditions:** ...
-**Test steps:**
-1. ...
-**Expected result:** ...
-**Priority:** Medium
-**Automated:** Yes / No / Planned
-
----
-
-## Negative / Error Tests
-
-### TC-020: [Short title]
-**AC covered:** AC-XX (error state)
-**Preconditions:** ...
-**Test steps:**
-1. ...
-**Expected result:** (error message, validation feedback, or system behaviour)
-**Priority:** Medium
-**Automated:** Yes / No / Planned
-
----
-
-## Test Coverage Matrix
-
-| AC | TC IDs | Coverage |
-|----|--------|----------|
-| AC-01 | TC-001 | ✅ Full |
-| AC-02 | TC-002 | ✅ Full |
-| AC-03 | TC-003 | ⚠️ Partial |
-| EC-01 | TC-010 | ✅ Full |
+| TC ID | Bug file | Severity | Status |
+|-------|----------|----------|--------|
+| — | — | — | — |

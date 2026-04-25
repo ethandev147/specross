@@ -82,8 +82,7 @@ This repo uses Specross. Commands are available via Claude Code:
 | BA | `/ba:new-story [name]` | Create a new story |
 | BA | `/ba:review [story]` | Review story for gaps |
 | BA | `/ba:impact [story] [v-old] [v-new]` | Impact report on spec changes |
-| Dev | `/dev:gen-tech-spec [story]` | Generate tech spec from story |
-| Dev | `/dev:gen-scaffold [story]` | Generate code scaffold from tech spec |
+| Dev | `/dev:gen-tech-spec [story]` | Generate tech spec + API changes + tasks |
 | Dev | `/dev:review [story]` | Review implementation vs requirements |
 | QC | `/qc:gen-test-cases [story]` | Generate test cases from story |
 | QC | `/qc:gen-scripts [story]` | Generate automation scripts |
@@ -94,7 +93,7 @@ This repo uses Specross. Commands are available via Claude Code:
 ```
 BA: /ba:new-story → fill in story.md → /ba:review
                                               ↓
-                         Dev: /dev:gen-tech-spec → /dev:gen-scaffold → implement → /dev:review
+                         Dev: /dev:gen-tech-spec → implement (track tasks.md) → /dev:review
                          QC:  /qc:gen-test-cases → /qc:gen-scripts  → test      → /qc:bug-report
 ```
 

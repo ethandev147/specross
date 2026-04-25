@@ -65,4 +65,35 @@ ba/$ARGUMENTS/
    - List the files created
    - If sub-spec: remind BA to fill in AC specific to this flow/area
    - If parent: remind BA to fill in the overview, then create sub-specs with `/ba:new-story {SLUG}/{sub-slug}`
-   - Suggest next step: "Once story.md is complete, run `/ba:review $ARGUMENTS`"
+
+8. **Ask open questions to help the BA clarify the story** before they start writing.
+
+   Based on the story name and slug, generate 4–7 targeted questions that expose common gaps.
+   Cover these angles (pick the most relevant, don't ask all mechanically):
+
+   - **Who:** Which user roles are involved? Are there permission differences between them?
+   - **Trigger:** What exactly triggers this flow? (user action, system event, scheduled job?)
+   - **Happy path:** What does success look like — what does the user see/get?
+   - **Failure states:** What can go wrong? What should happen when it does?
+   - **Edge cases:** Any boundary conditions? (empty states, duplicates, limits, concurrency?)
+   - **Data:** What data is created/modified/deleted? Any validation rules?
+   - **Dependencies:** Does this depend on another story, service, or external system?
+   - **Out of scope:** Anything that sounds related but should NOT be in this story?
+
+   Format:
+   ```
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   📋  Open questions for: {display name}
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Answer these to fill in your story.md clearly:
+
+   1. [Question]
+   2. [Question]
+   3. [Question]
+   ...
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Once answered, fill in story.md then run /ba:review $ARGUMENTS
+   ```
+
+   Wait for the BA to answer. Once they respond, offer to fill in the relevant sections of `ba/$ARGUMENTS/story.md` based on their answers.

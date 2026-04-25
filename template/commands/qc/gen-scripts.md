@@ -6,7 +6,8 @@ Generate automation test scripts for story: $ARGUMENTS
 
 ## Steps
 
-1. Read `stories/$ARGUMENTS/test/test-cases.md`. If it doesn't exist, stop and say: "Test cases not found. Run `/qc:gen-test-cases $ARGUMENTS` first."
+1. Read `stories/$ARGUMENTS/test/test-cases.md` (index). If it doesn't exist, stop and say: "Test cases not found. Run `/qc:gen-test-cases $ARGUMENTS` first."
+   Then read all files in `stories/$ARGUMENTS/test/cases/` to get the full TC details.
 
 2. Read `stories/$ARGUMENTS/story.md` for business context and AC details.
 
@@ -15,7 +16,7 @@ Generate automation test scripts for story: $ARGUMENTS
    - Test folder conventions and file naming
    - Any existing test helpers, fixtures, or page objects to reuse
 
-4. For each test case in test-cases.md, generate an automation script:
+4. For each test case across all `cases/*.md` files, generate an automation script:
    - Map TC-001 → test function/block with the same ID in a comment
    - Use the testing framework specified in CLAUDE.md
    - Write realistic selectors, assertions, and setup/teardown

@@ -12,66 +12,63 @@ Print the following help text exactly:
 BUSINESS ANALYST  ──────────────────────────────────────────
 
   /ba:new-story {story}
-    Create a new story draft under ba/{story}/story.md
-    Uses the story template — fill in AC, edge cases, scope.
+    Create a new story draft — asks open questions upfront.
 
   /ba:review {story}
-    Review a draft story for gaps before releasing.
-    Checks: missing AC, vague criteria, undefined edge cases.
-
-  /ba:release {story} {version}
-    Promote a draft to stories/ as the official released version.
-    Diffs vs previous, writes CHANGELOG, alerts outdated Dev/QC specs.
+    Review draft for gaps: missing AC, vague criteria, edge cases.
 
   /ba:impact {story}
-    Show downstream impact of a story change before releasing.
-    Lists which Dev and QC artifacts will be affected.
+    Show Dev + QC impact of pending changes before releasing.
+
+  /ba:release {story} {version}
+    Promote draft to stories/. Writes CHANGELOG + release note.
+    Alerts Dev/QC if their specs are now outdated.
 
 DEVELOPER  ─────────────────────────────────────────────────
 
   /dev:status
-    Scan all stories — show which tech specs are outdated or missing.
-    Run this first thing to see what needs attention.
+    Scan all stories — tech spec status + handoff state.
 
   /dev:gen-tech-spec {story}
-    Generate a tech spec from the released story.
-    Maps every AC to a technical approach. Locks spec version.
-
-  /dev:gen-scaffold {story}
-    Generate skeleton code and stub tests from the tech spec.
-    Creates files in src/ and tests/ with TODOs to implement.
+    story → tech-spec.md + changes/{api}.md + tasks.md
 
   /dev:review {story}
-    Review your implementation against the story's AC.
-    Flags gaps between code and acceptance criteria.
+    Review implementation vs AC + API contracts + open tasks.
 
   /dev:sync {story}
-    Show what changed in the story since your last tech spec.
-    Tells you exactly which sections and code to update.
+    Story updated? Shows which tech files + tasks need updating.
+
+  /dev:done {story}
+    Mark dev complete. Creates handoff.md for QC.
 
 QC / TESTING  ──────────────────────────────────────────────
 
   /qc:status
-    Scan all stories — show which test cases are outdated or missing.
-    Run this first thing to see what needs attention.
+    Scan all stories — test status + handoff readiness.
 
   /qc:gen-test-cases {story}
-    Generate test cases from the released story.
-    Happy path + edge case + negative TCs for every AC. Locks spec version.
+    story → test-cases.md (index) + cases/AC-01-*.md (one per AC)
+
+  /qc:run {story} [TC-ID]
+    Run TCs interactively: p/f/b/s.
+    Auto-creates bug reports, auto-updates test-cases.md.
+
+  /qc:retest {story} {TC-ID}
+    Retest a failed TC after a fix. Closes bug on pass.
 
   /qc:gen-scripts {story}
-    Generate automation scripts from the test cases.
-    Uses the framework defined in CLAUDE.md (Playwright, Cypress, pytest…).
+    test cases → automation scripts (framework from CLAUDE.md)
 
   /qc:sync {story}
-    Show what changed in the story since your last test cases.
-    Lists invalid TCs, TCs needing updates, and new TCs to add.
+    Story updated? Shows invalid TCs + new TCs to add.
 
-  /qc:bug-report {story}
-    Generate a structured bug report tied to a story's AC.
-    Includes repro steps, expected vs actual, AC reference.
+  /qc:bug-report {story} {TC-ID}
+    Create structured bug report with Dev quick context.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Tip: Start with /ba:new-story → /ba:release → /dev:status
+Full SDLC:
+  /ba:new-story → /ba:review → /ba:release
+  /dev:gen-tech-spec → implement → /dev:review → /dev:done
+  /qc:gen-test-cases → /qc:run → /qc:retest (on fix)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

@@ -1,81 +1,47 @@
-# Bug Report — {{TC_ID}}: {{SHORT_DESCRIPTION}}
+# Bug — {{TC_ID}}: {{SHORT_DESCRIPTION}}
 
-**Story:** stories/{{STORY_SLUG}}/story.md
-**Test Case:** {{TC_ID}}
-**AC affected:** AC-XX
-**Reported by:**
-**Date:** {{DATE}}
-**Status:** Open | In Progress | Fixed | Closed
-**Severity:** Critical | High | Medium | Low
-**Priority:** P1 | P2 | P3
+**Story:** stories/{{STORY_SLUG}}/story.md | **TC:** {{TC_ID}}
+**Date:** {{DATE}} | **Severity:** Critical / High / Medium / Low
+**Status:** Open
 
 ---
 
 ## Summary
 
-> One sentence describing the bug.
-
----
+> One sentence.
 
 ## Environment
 
-- **App version / branch:**
-- **Environment:** Test | Staging | Production
-- **Browser / OS:**
-- **Test user / data used:**
-
----
+- **Branch/version:**
+- **Env:** Test / Staging / Prod
+- **Browser/OS:**
 
 ## Steps to Reproduce
 
 1. ...
-2. ...
-3. ...
 
----
+## Expected
 
-## Expected Result
+> (from TC)
 
-> (from the test case)
+## Actual
 
----
-
-## Actual Result
-
-> (what actually happened)
-
----
+> (what happened)
 
 ## Evidence
 
-- **Screenshot:** (attach or describe)
-- **Console errors:**
 ```
-paste here
-```
-- **Network request/response:**
-```
-paste here
+paste logs / errors here
 ```
 
----
+## Dev Quick Context
 
-## AC Violated
-
-> Describe how this breaks the related Acceptance Criterion.
-
----
-
-## Notes for Dev
-
-> Any observations that might help narrow down the cause.
-
----
+- **Tech spec:** stories/{{STORY_SLUG}}/tech/tech-spec.md
+- **AC:** (paste AC text)
+- **Likely area:** Frontend / Backend / Database / API contract
 
 ## Resolution
 
-> (Filled in by Dev when fixed)
-
-- **Fixed in:** branch / commit
-- **Fix description:**
-- **Re-test required:** Yes / No
+- **Fixed in:**
+- **Fix:**
+- **Re-test:** Yes / No

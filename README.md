@@ -1,74 +1,128 @@
 # Specross
 
-**Spec-driven AI collaboration for BA, Dev, and QC teams.**
-
-```
-BA writes story  →  Dev generates tech-spec + scaffold  →  ship
-                 ↘  QC generates test cases + scripts   ↗
-```
-
-One story. Three roles. No drift.
+**One source of truth for BA, Dev, and QC — powered by Claude Code.**
 
 ---
 
 ## The problem
 
-Specs live in Notion. Test cases live in Jira. Code lives in Git. Nobody's reading the same thing.
+```
+BA  → updates story on Notion
+Dev → reads Notion, writes tech spec somewhere else
+QC  → reads Notion (different version), writes test cases somewhere else
+Bug → filed in Jira, no link back to the original AC
+```
 
-BA updates a story — Dev doesn't know. QC writes test cases from memory, not from AC. Tech spec drifts from the story the moment it's written.
+Three roles. Three tools. Nobody reading the same thing.
 
-Specross fixes this by making the story the single source of truth, and giving each role an AI command that reads directly from it.
+BA updates a story — Dev doesn't know. QC writes test cases from memory. Tech spec drifts from the story the moment it's written. Bugs get reported without context. Dev can't reproduce them.
+
+**The root cause is always the same: no single source of truth.**
 
 ---
 
-## How it works
+## The fix
 
-**BA** drafts a story in `ba/` — problem statement, actors, acceptance criteria, edge cases — and releases it to `stories/` when ready.
+```
+stories/order-management/create-order/story.md  ← everyone reads from here
+```
 
-**Dev** runs `/dev:gen-tech-spec` — AI reads the story and generates a tech spec in the exact format your team uses. Then `/dev:gen-scaffold` to generate a code scaffold.
-
-**QC** runs `/qc:gen-test-cases` — AI reads the same story and generates test cases covering every AC and edge case, with a coverage matrix.
-
-**When BA updates the story** — `/ba:release` auto-diffs the new version against the previous one and tells Dev and QC exactly what changed. They run `/dev:sync` and `/qc:sync` to see what needs updating.
-
-No meetings. No copy-paste. No guessing.
+Tech spec generated from it. Test cases generated from it. Bug reports linked back to it. `.spec-lock` tracks when someone falls behind. When BA updates the story — Dev and QC know exactly what changed and what needs updating.
 
 ---
 
 ## Install
 
-**Option 1 — npx (no install needed):**
 ```bash
 npx specross init
 ```
 
-**Option 2 — global install:**
+Run in your project root. Installs into `.claude/`. Requires Node 16+.
+
 ```bash
-npm install -g specross
-specross init
+npx specross update   # update commands only, keeps your customizations
 ```
 
-Run in your project root. It asks which AI tool you're using, then copies commands and agents to the right place.
+---
 
-```
-Which AI tool are you using?
+## Full SDLC
 
-  1. Claude Code   →  .claude/commands/  +  .claude/agents/
-  2. Cursor        →  .cursor/rules/
-  3. Windsurf      →  .windsurf/rules/
-  4. Other         →  ai/commands/  +  ai/agents/
-```
+### 1. BA — write & release
 
-**Update commands to latest version:**
 ```bash
-npx specross update
-# or
-specross update
+/ba:new-story order-management/create-order
+# creates story.md
+# asks open questions upfront to clarify scope, actors, edge cases
+
+/ba:review order-management/create-order
+# checks for missing AC, vague criteria, undefined edge cases
+
+/ba:impact order-management/create-order
+# before releasing an update: shows which Dev/QC files will be affected
+
+/ba:release order-management/create-order v1.0.0
+# promotes to stories/, writes CHANGELOG + release note
+# alerts Dev/QC if their specs are now outdated
 ```
 
-Never overwrites your agent and template customizations.
+### 2. Dev — spec to implementation
 
-**Requirements:** Node.js 16+
+```bash
+/dev:status
+# scan all stories: spec status, in-progress, done, outdated
+
+/dev:gen-tech-spec order-management/create-order
+# story →
+#   tech/tech-spec.md              overview + AC mapping
+#   tech/changes/POST-api-v1-*.md  one file per API endpoint
+#   tech/changes/data-model.md     schema changes
+#   tech/tasks.md                  task list linked to ACs + .spec-lock
+
+# implement, tick off tasks.md as you go
+
+/dev:review order-management/create-order
+# checks implementation vs AC + API contracts + open tasks
+
+/dev:done order-management/create-order
+# checks all tasks complete, creates tech/handoff.md for QC
+```
+
+### 3. QC — test & report
+
+```bash
+/qc:status
+# scan all stories: handoff state + test results + failing TCs
+
+/qc:gen-test-cases order-management/create-order
+# reads story + handoff.md (env setup, known limitations)
+# generates:
+#   test/test-cases.md         index: run log, coverage matrix, bug table
+#   test/cases/AC-01-*.md      one file per AC, all TCs inside
+#   .spec-lock
+
+/qc:run order-management/create-order
+# walks through each pending TC: p / f / b / s
+# on fail → asks actual result + env (2 questions only)
+#         → auto-creates bug report
+#         → auto-updates test-cases.md (run log, summary, bug table)
+
+/qc:retest order-management/create-order TC-003
+# after Dev fixes: retest the TC
+# on pass → auto-closes bug report, updates test-cases.md
+```
+
+### 4. BA updates story — everyone syncs
+
+```bash
+/ba:impact order-management/create-order     # preview impact first
+/ba:release order-management/create-order v1.1.0
+
+/dev:sync order-management/create-order
+# shows what changed → update? yes → updates tech files + tasks + spec-lock auto
+
+/qc:sync order-management/create-order
+# shows which TCs invalid → update? yes → updates cases/ + index + spec-lock auto
+```
 
 ---
 
@@ -76,129 +130,65 @@ Never overwrites your agent and template customizations.
 
 ```
 your-project/
-├── {ai-folder}/             ← commands + agents (location depends on your AI tool)
+├── .claude/
 │   ├── commands/
-│   │   ├── ba/              ← /ba:new-story, /ba:review, /ba:release, /ba:impact
-│   │   ├── dev/             ← /dev:gen-tech-spec, /dev:gen-scaffold, /dev:review, /dev:sync
-│   │   └── qc/              ← /qc:gen-test-cases, /qc:gen-scripts, /qc:bug-report, /qc:sync
+│   │   ├── ba/   ← new-story · review · impact · release
+│   │   ├── dev/  ← gen-tech-spec · review · sync · status · done
+│   │   └── qc/   ← gen-test-cases · run · retest · gen-scripts
+│   │               · sync · status · bug-report
 │   └── agents/
-│       ├── ba.md            ← HOW the AI thinks as BA
-│       ├── dev.md           ← HOW the AI thinks as Dev
-│       └── qc.md            ← HOW the AI thinks as QC
+│       ├── ba.md   ← how AI thinks as BA
+│       ├── dev.md  ← how AI thinks as Dev
+│       └── qc.md   ← how AI thinks as QC
 │
-├── _templates/              ← WHAT format the AI outputs
+├── _templates/     ← output format (customize freely)
 │   ├── story.md
 │   ├── tech-spec.md
 │   ├── test-cases.md
+│   ├── test-case-file.md
 │   └── bug-report.md
 │
-├── ba/                      ← BA draft workspace (work in progress)
-├── stories/                 ← released stories (source of truth for Dev & QC)
-└── CLAUDE.md                ← fill in your tech stack, team conventions, architecture
+├── ba/             ← BA drafts
+├── stories/        ← source of truth
+└── CLAUDE.md       ← your tech stack, conventions, team
 ```
 
 ---
 
-## Workflow
-
-### BA — write and release
-
-```bash
-# Create a feature and break it into specs
-/ba:new-story order-management
-/ba:new-story order-management/create-order
-/ba:new-story order-management/list-orders
-
-# Review for gaps before releasing
-/ba:review order-management/create-order
-
-# Release draft → stories/ (auto-diffs if update)
-/ba:release order-management/create-order v1.0.0
-```
-
-Story lives at `ba/order-management/create-order/story.md` while in draft. On release, it's promoted to `stories/` — that's the version Dev and QC work from.
-
----
-
-### Dev — from story to code
-
-```bash
-/dev:gen-tech-spec order-management/create-order   # story → tech spec
-/dev:gen-scaffold  order-management/create-order   # tech spec → code scaffold
-/dev:review        order-management/create-order   # check impl vs AC
-/dev:sync          order-management/create-order   # story updated? see what changed
-```
-
-Output: `stories/order-management/create-order/tech/tech-spec.md`
-
----
-
-### QC — from story to tests
-
-```bash
-/qc:gen-test-cases order-management/create-order          # story → test cases
-/qc:gen-scripts    order-management/create-order          # test cases → automation scripts
-/qc:bug-report     order-management/create-order TC-003   # structured bug report
-/qc:sync           order-management/create-order          # story updated? see what changed
-```
-
-Output: `stories/order-management/create-order/test/test-cases.md`
-
----
-
-### Story update flow
-
-```bash
-# BA edits ba/order-management/create-order/story.md
-/ba:release order-management/create-order v1.1.0
-# → auto-diffs vs stories/, summarizes what changed, estimates impact on Dev + QC
-
-/dev:sync order-management/create-order   # AI shows which parts of tech-spec need updating
-/qc:sync  order-management/create-order   # AI shows which test cases are now invalid
-```
-
----
-
-## Story folder structure
+## Story folder (after full cycle)
 
 ```
-stories/
-└── order-management/
-    ├── story.md                       ← overview spec
-    ├── CHANGELOG.md
-    ├── create-order/                  ← sub-spec (one per flow)
-    │   ├── story.md                   ← source of truth
-    │   ├── CHANGELOG.md
-    │   ├── docs/
-    │   │   └── release-v1.0.0.md
-    │   ├── tech/
-    │   │   ├── tech-spec.md           ← Dev output
-    │   │   └── .spec-lock             ← which story version this is based on
-    │   └── test/
-    │       ├── test-cases.md          ← QC output
-    │       └── .spec-lock
-    └── list-orders/
-        └── ...
+stories/order-management/create-order/
+├── story.md                        ← source of truth
+├── CHANGELOG.md
+├── docs/
+│   └── release-v1.0.0.md
+├── tech/
+│   ├── tech-spec.md
+│   ├── changes/
+│   │   ├── data-model.md
+│   │   └── POST-api-v1-orders.md
+│   ├── tasks.md                    ← Dev tracking
+│   ├── handoff.md                  ← created by /dev:done
+│   └── .spec-lock
+└── test/
+    ├── test-cases.md               ← index: run log + coverage + bugs
+    ├── cases/
+    │   ├── AC-01-create-success.md
+    │   └── AC-02-validation.md
+    ├── bugs/
+    │   └── bug-TC-003-*.md
+    └── .spec-lock
 ```
 
 ---
 
 ## Customize
 
-Two layers, both preserved on `npx specross update`:
+`npx specross update` only refreshes commands — never touches agents or templates.
 
-**Agents** — change how the AI behaves per role (seniority, tone, rules, red flags):
-```
-agents/ba.md    agents/dev.md    agents/qc.md
-```
-
-**Templates** — change the output format for your team:
-```
-_templates/story.md        _templates/tech-spec.md
-_templates/test-cases.md   _templates/bug-report.md
-```
-
-Edit agents to change how the AI *thinks*. Edit templates to change what it *outputs*.
+- **Agents** (`agents/ba.md`, `dev.md`, `qc.md`) — change how the AI *thinks* per role
+- **Templates** (`_templates/`) — change what the AI *outputs*
 
 ---
 
