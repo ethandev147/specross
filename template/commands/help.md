@@ -5,70 +5,31 @@ Print the Specross command reference. No arguments needed.
 Print the following help text exactly:
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⚡  SPECROSS — Command Reference
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚡  SPECROSS — Spec-driven development (SDD)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-BUSINESS ANALYST  ──────────────────────────────────────────
+BA  ────────────────────────────────────────────────────
+  /ba:new-story {story}          Create story, ask clarifying questions
+  /ba:review {story}             Check for gaps before releasing
+  /ba:impact {story}             Preview Dev/QC impact of pending changes
+  /ba:release {story} {version}  Promote to stories/, write release note
 
-  /ba:new-story {story}
-    Create a new story draft — asks open questions upfront.
+DEV ────────────────────────────────────────────────────
+  /dev:gen-tech-spec {story}           story → tech-spec + API files + tasks
+  /dev:implement {story} {task-id}     Implement a task against the spec
+  /dev:review {story}                  Check implementation vs AC
+  /dev:sync {story}                    Spec updated? Diff what needs changing
+  /dev:done {story}                    Mark complete, write handoff for QC
 
-  /ba:review {story}
-    Review draft for gaps: missing AC, vague criteria, edge cases.
+QC  ────────────────────────────────────────────────────
+  /qc:gen-test-cases {story}  story → test cases organized by AC
+  /qc:run {story} [TC-ID]     Run TCs interactively — auto bug report on fail, auto-close on retest pass
+  /qc:sync {story}            Spec updated? Update affected test cases
 
-  /ba:impact {story}
-    Show Dev + QC impact of pending changes before releasing.
-
-  /ba:release {story} {version}
-    Promote draft to stories/. Writes CHANGELOG + release note.
-    Alerts Dev/QC if their specs are now outdated.
-
-DEVELOPER  ─────────────────────────────────────────────────
-
-  /dev:status
-    Scan all stories — tech spec status + handoff state.
-
-  /dev:gen-tech-spec {story}
-    story → tech-spec.md + changes/{api}.md + tasks.md
-
-  /dev:review {story}
-    Review implementation vs AC + API contracts + open tasks.
-
-  /dev:sync {story}
-    Story updated? Shows which tech files + tasks need updating.
-
-  /dev:done {story}
-    Mark dev complete. Creates handoff.md for QC.
-
-QC / TESTING  ──────────────────────────────────────────────
-
-  /qc:status
-    Scan all stories — test status + handoff readiness.
-
-  /qc:gen-test-cases {story}
-    story → test-cases.md (index) + cases/AC-01-*.md (one per AC)
-
-  /qc:run {story} [TC-ID]
-    Run TCs interactively: p/f/b/s.
-    Auto-creates bug reports, auto-updates test-cases.md.
-
-  /qc:retest {story} {TC-ID}
-    Retest a failed TC after a fix. Closes bug on pass.
-
-  /qc:gen-scripts {story}
-    test cases → automation scripts (framework from CLAUDE.md)
-
-  /qc:sync {story}
-    Story updated? Shows invalid TCs + new TCs to add.
-
-  /qc:bug-report {story} {TC-ID}
-    Create structured bug report with Dev quick context.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Full SDLC:
-  /ba:new-story → /ba:review → /ba:release
-  /dev:gen-tech-spec → implement → /dev:review → /dev:done
-  /qc:gen-test-cases → /qc:run → /qc:retest (on fix)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  BA: new-story → review → release
+ Dev: gen-tech-spec → implement → review → done
+  QC: gen-test-cases → run (retest bằng /qc:run {story} {TC-ID})
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

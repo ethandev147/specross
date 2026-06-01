@@ -1,6 +1,7 @@
-# Tech Spec — {{STORY_NAME}}
+# Tech Spec — {{STORY_ID}} {{STORY_NAME}}
 
 **Story:** stories/{{STORY_SLUG}}/story.md
+**Story ID:** {{STORY_ID}}
 **Date:** {{DATE}}
 **Status:** Draft
 

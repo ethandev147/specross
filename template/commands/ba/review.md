@@ -1,44 +1,12 @@
-> **Agent:** Read `.claude/agents/ba.md` and adopt that persona fully before proceeding.
+> Adopt the BA persona from `.claude/agents/ba.md`.
 
----
+Review `ba/$ARGUMENTS/story.md` for completeness and quality.
 
-Review the story at `ba/$ARGUMENTS/story.md` for completeness and quality.
+Check for: vague ACs ("should", "maybe"), missing actors, ACs that aren't independently testable, missing edge cases, missing out-of-scope, implementation details leaking into ACs.
 
-## Steps
+Output:
+- **Status:** READY / NEEDS WORK
+- **Gaps:** specific issues with fix suggestions
+- **Questions:** anything needing clarification before Dev/QC starts
 
-1. Read `ba/$ARGUMENTS/story.md` fully.
-
-2. Evaluate the story against this checklist:
-
-### Completeness
-- [ ] Story title and slug are filled in
-- [ ] Description clearly explains the "what" and "why" (not just "what")
-- [ ] All actors/users who interact with this feature are identified
-- [ ] Acceptance Criteria (AC) are written in "Given / When / Then" or clear pass/fail format
-- [ ] Each AC is independently testable
-- [ ] Edge cases and error states are documented
-- [ ] Out-of-scope items are explicitly listed
-- [ ] Any dependencies on other stories or systems are noted
-
-### Quality
-- [ ] No ambiguous words like "should", "maybe", "might", "sometimes"
-- [ ] No missing actors (e.g. AC says "the user" but which user role?)
-- [ ] No AC that mixes multiple conditions (each AC = one condition)
-- [ ] No technical implementation details dictated in the AC (BA says WHAT, not HOW)
-
-## Output format
-
-Return a structured review:
-
-**Story:** `$ARGUMENTS`
-**Status:** READY / NEEDS WORK / BLOCKED
-
-**Gaps found:** (list each gap with a specific suggestion to fix it)
-
-**Suggested ACs to add:** (if any are missing)
-
-**Questions for the BA:** (anything that needs clarification before Dev/QC can proceed)
-
-If the story is READY, say so clearly and suggest next steps:
-- Dev: `/dev:gen-tech-spec $ARGUMENTS`
-- QC: `/qc:gen-test-cases $ARGUMENTS`
+If READY: suggest `/dev:gen-tech-spec $ARGUMENTS` and `/qc:gen-test-cases $ARGUMENTS`.

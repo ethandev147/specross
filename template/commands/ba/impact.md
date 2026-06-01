@@ -1,52 +1,15 @@
-> **Agent:** Read `.claude/agents/ba.md` and adopt that persona fully before proceeding.
+> Adopt the BA persona from `.claude/agents/ba.md`.
 
----
+Show downstream impact of pending changes before releasing: $ARGUMENTS
 
-Show downstream impact of a pending story change before releasing.
+1. Diff `ba/$ARGUMENTS/story.md` vs `stories/$ARGUMENTS/story.md`. If no released version: "Nothing to diff yet."
+2. Read `stories/$ARGUMENTS/tech/` and `stories/$ARGUMENTS/test/` to assess what breaks.
 
-Usage: `/ba:impact {story-slug}`
-
-## Steps
-
-1. Read `ba/$ARGUMENTS/story.md` (current draft).
-2. Read `stories/$ARGUMENTS/story.md` (last released version).
-   If not found: "No released version yet — nothing to diff."
-
-3. Compare the two files directly. Identify:
-   - ACs added / removed / modified
-   - Edge cases added / removed / modified
-   - Scope or dependency changes
-
-4. Read `stories/$ARGUMENTS/tech/tech-spec.md` and all `tech/changes/` files (if exist).
-5. Read `stories/$ARGUMENTS/tech/tasks.md` (if exists).
-6. Read `stories/$ARGUMENTS/test/test-cases.md` (if exists).
-
-7. Generate impact report:
-
+Output:
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊  IMPACT REPORT — $ARGUMENTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Draft vs released version
-
-STORY CHANGES:
-  Added:    [list]
-  Removed:  [list]
-  Modified: [list]
-
-DEV IMPACT:
-  tech-spec sections affected: [list]
-  API files affected:          [list]
-  New tasks estimated:         [N]
-  Effort: Low / Medium / High
-
-QC IMPACT:
-  TCs now invalid:  [TC IDs]
-  TCs need update:  [TC IDs]
-  New TCs needed:   [N]
-  Effort: Low / Medium / High
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STORY CHANGES:  added / removed / modified ACs and edge cases
+DEV IMPACT:     affected tech files, estimated new tasks, effort (Low/Med/High)
+QC IMPACT:      invalid TCs, TCs needing update, new TCs needed, effort (Low/Med/High)
 ```
 
-8. Ask: "Ready to release? Run `/ba:release $ARGUMENTS {version}` to proceed."
+End with: "Ready to release? Run `/ba:release $ARGUMENTS {version}`"

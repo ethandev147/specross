@@ -2,6 +2,7 @@
 
 | | |
 |---|---|
+| **ID** | `{{STORY_ID}}` |
 | **Slug** | `{{STORY_SLUG}}` |
 | **Date** | {{DATE}} |
 | **Status** | Draft |

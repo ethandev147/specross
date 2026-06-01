@@ -1,16 +1,27 @@
 {
   "name": "specross",
-  "version": "1.1.1",
-  "description": "Spec-driven AI collaboration for BA, Dev, and QC teams — built for Claude Code",
+  "version": "1.2.0",
+  "description": "Spec-driven development (SDD) for AI coding assistants",
   "keywords": [
-    "claude",
+    "spec-driven-development",
+    "sdd",
+    "ai-workflow",
     "claude-code",
-    "ai",
+    "cursor",
+    "windsurf",
+    "codex",
+    "business-analyst",
+    "user-story",
+    "acceptance-criteria",
+    "test-cases",
     "agile",
+    "scrum",
+    "requirements",
+    "ai-coding-assistant",
+    "slash-commands",
     "ba",
-    "dev",
     "qc",
-    "specflow"
+    "claude"
   ],
   "homepage": "https://github.com/ethandev147/specross",
   "repository": {
